@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -17,6 +19,8 @@ android {
             useSupportLibrary = true
         }
 
+        buildConfigField("String", "BASE_URL", gradleLocalProperties(rootDir).getProperty("base.url"))
+        buildConfigField("String", "OPEN_API_KEY", gradleLocalProperties(rootDir).getProperty("openApi.key"))
     }
 
     buildTypes {
@@ -37,6 +41,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -47,6 +52,7 @@ android {
         }
     }
 }
+
 
 dependencies {
 
@@ -71,4 +77,12 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+
+    // Scalar Converter - retrofit이 json 결과를 string으로 반환 가능.
+//    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 }
